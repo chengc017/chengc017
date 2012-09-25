@@ -1,0 +1,92 @@
+<%@ page contentType="text/html;charset=GBK"%>
+<%@ page
+	import="com.sohu.sur.util.Pagination,java.net.*,java.util.Enumeration"%>
+<%
+
+  if(request.getAttribute("pagination")==null )
+   return;
+  Pagination pagination=(Pagination)request.getAttribute("pagination");
+  String baseurl=request.getParameter("baseurl");
+  if(baseurl.indexOf("?") > 0 )  baseurl+="&";
+  else baseurl+="?";
+  Enumeration xenum=request.getParameterNames();
+  while(xenum.hasMoreElements()){
+     String name=(String)xenum.nextElement();
+     if(name.equals("pagination.pageNO")||name.equals("baseurl")||name.equals("submit")) continue;
+     if(name.startsWith("medicine"))continue;
+     String value=URLEncoder.encode(request.getParameter( name));
+     baseurl+=name+"="+value+"&";
+  }
+  baseurl=baseurl+"pagination.pageNO=";
+%>
+
+<table cellpadding="1" cellspacing="0" bordercolordark="#ffffff"
+	bordercolorlight="#97989a">
+	<tr>
+		<td>
+			共
+			<font color=red><%=pagination.getRecordSum()%>
+			</font>条, 分
+			<font color=red><%=pagination.getPageSum()%>
+			</font>页, 当前第
+			<font color=red><%=pagination.getPageNO()%>
+			</font>页 &nbsp;&nbsp;&nbsp;
+			<a href="javascript:goPage(1)">首页</a> &nbsp;&nbsp;&nbsp;
+			<%
+ 	if (pagination.getPageNO() > 1 && pagination.getPageNO() <= pagination.getPageSum()) {
+ %>
+			<a href="javascript:goPage(<%=pagination.getPrePageNO()%>)">上一页</a>
+			&nbsp;&nbsp;&nbsp;
+			<%
+ 	} else {
+ %>
+			上一页&nbsp;&nbsp;&nbsp;
+			<%
+ 	}
+ 	if (pagination.getNextPageNO() <= pagination.getPageSum()
+ 			&& pagination.getPageNO() < pagination.getPageSum()) {
+ %>
+			<a href="javascript:goPage(<%=pagination.getNextPageNO()%>)">下一页</a>&nbsp;&nbsp;&nbsp;
+			<%
+ 	} else {
+ %>
+			下一页&nbsp;&nbsp;&nbsp;
+			<%
+ 	}
+ %>
+			<a href="javascript:goPage(<%=pagination.getPageSum()%>)">尾页</a>&nbsp;&nbsp;&nbsp;
+			<!-- <form name="pageform" style="margin:0;display:inline"
+				onsubmit="javascript:return go(this)"> -->
+				<input type=text name="pageNO"
+					value="<%=pagination.getNextPageNO()%>" size=3>
+				<input src="/images/go.gif" border="0" height="18" type="image"
+					width="18" onclick="go();return false;">
+			<!-- </form> -->
+		</td>
+	</tr>
+</table>
+<script>
+<!--
+var baseurl='<%=baseurl%>';
+    function goPage(pageNO){
+      if(pageNO>0&&pageNO<=<%=pagination.getPageSum()%>&&pageNO!=<%=pagination.getPageNO()%>){
+				self.location=baseurl+pageNO;
+			}
+    }
+
+    function go(pageform){
+    	
+    	//pageNO=pageform.pageNO.value;
+    	var pageNO=document.getElementById("pageNO").value;
+    	 var r = new RegExp("^[0-9]+$", "g");
+		 if(!r.test(pageNO)){
+		 	alert("页数只能录入整数！");
+		 	return false;
+		 }
+      if(pageNO>0&&pageNO<=<%=pagination.getPageSum()%>&&pageNO!=<%=pagination.getPageNO()%>){
+				self.location=baseurl+pageNO;
+			}
+    	return false;
+    }
+-->
+</script>

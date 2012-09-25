@@ -1,0 +1,7 @@
+mysql.data.url=${db.url}
+mysql.data.username=${db.user}
+mysql.data.password=${db.password}
+mysql.data.driverClassName=com.mysql.jdbc.Driver
+mysql.hibernate.hbm2ddl.auto=none
+mysql.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
